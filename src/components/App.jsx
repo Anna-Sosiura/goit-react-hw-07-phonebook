@@ -9,9 +9,9 @@ import { Notify } from 'notiflix';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const selectLoader = state => state.contacts.loader;
+  const selectLoader = state => state.contacts.isLoading;
   const selectError = state => state.contacts.error;
-  const loader = useSelector(selectLoader);
+  const isLoading = useSelector(selectLoader);
   const error = useSelector(selectError);
   useEffect(() => {
     dispatch(getContacts());
@@ -27,7 +27,7 @@ export const App = () => {
       <ContactForm></ContactForm>
       <h2>Contacts</h2>
       <Filter />
-      {loader ? (
+      {isLoading ? (
         <p>Loading...</p>
       ) : error ? (
         Notify.warning(error)
