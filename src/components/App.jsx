@@ -4,11 +4,13 @@ import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import { getContacts } from 'servise/contactsServise';
-import { selectLoader, selectError } from '../redux/selectors';
 import { useDispatch } from 'react-redux';
+import { Notify } from 'notiflix';
 
 export const App = () => {
   const dispatch = useDispatch();
+  const selectLoader = state => state.contacts.loader;
+  const selectError = state => state.contacts.error;
   const loader = useSelector(selectLoader);
   const error = useSelector(selectError);
   useEffect(() => {
@@ -25,7 +27,13 @@ export const App = () => {
       <ContactForm></ContactForm>
       <h2>Contacts</h2>
       <Filter />
-      {loader ? <p>Loading...</p> : error ? <p>{error}</p> : <ContactList />}
+      {loader ? (
+        <p>Loading...</p>
+      ) : error ? (
+        Notify.warning(error)
+      ) : (
+        <ContactList />
+      )}
     </div>
   );
 };

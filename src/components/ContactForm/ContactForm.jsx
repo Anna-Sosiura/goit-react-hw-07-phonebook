@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Form, AddBtn, Label, Input } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-// import { nanoid } from 'nanoid';
 import { addContact } from '../../servise/contactsServise';
 import { Notify } from 'notiflix';
 
@@ -32,9 +31,6 @@ const ContactForm = () => {
 
     resetForm();
   };
-  // useEffect(() => {
-  //   contacts && localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
 
   const hendleChange = e => {
     const { value, name } = e.currentTarget;
