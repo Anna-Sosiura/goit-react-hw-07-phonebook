@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Form, AddBtn, Label, Input } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
-import { setContact } from '../../redux/contactSlice';
+// import { nanoid } from 'nanoid';
+import { addContact } from '../../servise/contactsServise';
 import { Notify } from 'notiflix';
 
-const getContacts = state => state.contacts.contacts;
+const getContacts = state => state.contacts.contactItems;
 
 const ContactForm = () => {
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
     const resetForm = () => {
       setName('');
-      setNumber('');
+      setPhone('');
     };
     const isContact = contacts.find(
       el => el.name.toLowerCase() === name.toLowerCase()
@@ -25,15 +25,16 @@ const ContactForm = () => {
 
     if (isContact) {
       Notify.info(`Such contact already exists`);
+      resetForm();
       return;
     }
-    dispatch(setContact({ id: nanoid(), name: name, number: number }));
+    dispatch(addContact({ name, phone }));
 
     resetForm();
   };
-  useEffect(() => {
-    contacts && localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   contacts && localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   const hendleChange = e => {
     const { value, name } = e.currentTarget;
@@ -43,7 +44,7 @@ const ContactForm = () => {
 
         break;
       case 'number':
-        setNumber(value);
+        setPhone(value);
 
         break;
       default:
@@ -68,7 +69,7 @@ const ContactForm = () => {
           type="tel"
           name="number"
           required
-          value={number}
+          value={phone}
           onChange={hendleChange}
         />
       </Label>
